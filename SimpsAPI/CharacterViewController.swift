@@ -1,0 +1,157 @@
+//
+//  CharacterViewController.swift
+//  SimpsAPI
+//
+//  Created by . on 27.09.2023.
+//
+
+import UIKit
+import SnapKit
+
+class CharacterViewController: UIViewController {
+    
+    private var showButton = {
+        let button = UIButton()
+        button.setTitle("Next", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(red: 254/255, green: 228/255, blue: 106/255, alpha: 1)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
+        button.layer.cornerRadius = 15
+        button.layer.borderWidth = 6
+        button.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).cgColor
+        return button
+    }()
+    private var mainLabel = {
+       let label =  UILabel()
+        label.text = "Quotes by\n" + "The Simpsons"
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        label.font = UIFont(name: "Bradley Hand", size: 25)
+        label.textColor = UIColor(red: 242/255, green: 75/255, blue: 80/255, alpha: 1)
+        
+       return label
+    }()
+    
+    private var quote = {
+       let label = UILabel()
+        label.font = UIFont(name: "Noteworthy", size: 20)
+        label.numberOfLines = 0
+       return label
+    }()
+   private  var characterImageView = {
+       let character = UIImageView()
+       return character
+   }()
+   private  var characterName = {
+      let name = UILabel()
+       name.font = UIFont(name: "Noteworthy", size: 25)
+       
+       
+       return name
+   }()
+    
+    var imageActivityIndicatorView = UIActivityIndicatorView()
+     
+
+    let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
+
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        showButtonSetup()
+        mainLabelSetup()
+        quoteSet()
+        characterImageViewSet()
+        characterNameSet()
+        fetchData()
+        activitySet()
+        
+
+    }
+
+    private func fetchData() {
+        guard let url = URL(string: url) else { return }
+        URLSession.shared.dataTask(with: url) { (data, respons, error) in
+
+            guard let data = data else { return }
+
+
+            do {
+                let result = try JSONDecoder().decode([Character].self, from: data)
+
+                guard let image = result.first?.image,
+                let urlImage = URL(string: image),
+                let characterImageData = try? Data(contentsOf: urlImage) else { return }
+
+                DispatchQueue.main.async {
+                    self.quote.text = result.first?.quote
+                    self.characterName.text = result.first?.character
+                    self.characterImageView.image = UIImage(data: characterImageData)
+                    self.imageActivityIndicatorView.stopAnimating()
+                }
+            } catch let error {
+                print("Error: \(error)")
+            }
+        }.resume()
+    }
+
+    private func showButtonSetup() {
+        view.addSubview(showButton)
+        showButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(70)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(200)
+            showButton.addTarget(self, action: #selector(showButtonIsTapped), for: .touchUpInside)
+        }
+       
+    }
+    @objc func showButtonIsTapped() {
+                fetchData()
+                imageActivityIndicatorView.isHidden = false
+                imageActivityIndicatorView.startAnimating()
+    }
+    
+    private func mainLabelSetup() {
+        view.addSubview(mainLabel)
+        mainLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().inset(70)
+        }
+    }
+    private func quoteSet() {
+        view.addSubview(quote)
+        quote.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(25)
+            make.top.equalToSuperview().inset(150)
+            quote.text = ""
+        }
+    }
+    private func characterImageViewSet() {
+        view.addSubview(characterImageView)
+        characterImageView.snp.makeConstraints { make in
+            make.height.equalTo(379)
+            make.width.equalTo(305)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(quote).inset(120)
+        }
+    }
+     private func characterNameSet(){
+        view.addSubview(characterName)
+        characterName.snp.makeConstraints { make in
+            make.top.equalTo(characterImageView.snp_bottomMargin).offset(25)
+            make.right.equalToSuperview().inset(55)
+        }
+                characterName.text = ""
+    }
+    private func activitySet() {
+        view.addSubview(imageActivityIndicatorView)
+        imageActivityIndicatorView.startAnimating()
+        imageActivityIndicatorView.hidesWhenStopped = true
+        imageActivityIndicatorView.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+          
+        }
+    }
+}
