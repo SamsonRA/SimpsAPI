@@ -1,13 +1,16 @@
 PODS:
+  - Alamofire (5.8.0)
   - SnapKit (5.6.0)
   - Spring (1.0.6)
 
 DEPENDENCIES:
+  - Alamofire
   - SnapKit (~> 5.6.0)
   - Spring (from `https://github.com/MengTo/Spring.git`)
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - SnapKit
 
 EXTERNAL SOURCES:
@@ -20,9 +23,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
+  Alamofire: 0e92e751b3e9e66d7982db43919d01f313b8eb91
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   Spring: 3d113f14575ef79aec9c5f906dfa4f5001c03254
 
-PODFILE CHECKSUM: 69af654324e7c1300a045efc6971528e0f81c911
+PODFILE CHECKSUM: a27f5fb6355584ac077ec769b33a796b873227da
 
 COCOAPODS: 1.13.0

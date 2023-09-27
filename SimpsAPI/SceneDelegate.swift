@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
-        window?.rootViewController = CharacterViewController()
+        window?.rootViewController = StartViewController()
         window?.backgroundColor = UIColor(red: 162/255, green: 203/255, blue: 253/255, alpha: 1)
         window?.makeKeyAndVisible()
         
