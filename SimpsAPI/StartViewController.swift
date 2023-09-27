@@ -70,21 +70,21 @@ class StartViewController: UIViewController {
     }
     
     @objc func startButtonIsTapped() {
-        UIView.animate(withDuration: 1) {
-                 self.cloudOneImageView.frame.origin.x -= self.cloudOneImageView.frame.width
-                 self.cloudTwoImageView.frame.origin.x += self.cloudTwoImageView.frame.width
-                 self.cloudThreeImageView.frame.origin.x -= self.cloudThreeImageView.frame.width
-             }
-     
-             startButton.animation = "fadeOut"
-             startButton.animate()
-     
-             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                 self.cloudOneImageView.isHidden = true
-                 self.cloudTwoImageView.isHidden = true
-                 self.cloudThreeImageView.isHidden = true
-//             self.performSegue(withIdentifier: "C", sender: nil)
-                 
-             }
+      
+        UIView.animate(withDuration: 1.0) {
+            self.cloudOneImageView.frame.origin.x -= self.cloudOneImageView.frame.width
+            self.cloudTwoImageView.frame.origin.x += self.cloudTwoImageView.frame.width
+            self.cloudThreeImageView.frame.origin.x -= self.cloudThreeImageView.frame.width
+        } completion: { _ in
+            self.cloudOneImageView.isHidden = true
+            self.cloudTwoImageView.isHidden = true
+            self.cloudThreeImageView.isHidden = true
+            self.showCharacter()
+        }
+    }
+    func showCharacter() {
+        let vc = CharacterViewController()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true )
     }
 }
