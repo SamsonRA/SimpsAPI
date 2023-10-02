@@ -9,8 +9,17 @@ import UIKit
 import SnapKit
 
 class CharacterViewController: UIViewController {
+    private let presenter: CharacterPresenter
+    init(presenter: CharacterPresenter){
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+        
+    }
     
-    private var showButton = {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    private lazy var showButton = {
         let button = UIButton()
         button.setTitle("Next", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -21,6 +30,20 @@ class CharacterViewController: UIViewController {
         button.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).cgColor
         return button
     }()
+    
+    private lazy var closeButton = {
+        let button = UIButton()
+        button.setTitle("Close", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(red: 254/255, green: 228/255, blue: 106/255, alpha: 1)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25)
+        button.layer.cornerRadius = 15
+        button.layer.borderWidth = 6
+        button.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0).cgColor
+        
+        return button
+    }()
+    
     private var mainLabel = {
        let label =  UILabel()
         label.text = "Quotes by\n" + "The Simpsons"
@@ -51,9 +74,11 @@ class CharacterViewController: UIViewController {
    }()
     
     var imageActivityIndicatorView = UIActivityIndicatorView()
-     
+    
+    
 
-    let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
+//    let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
+    
 
     
     
@@ -61,16 +86,18 @@ class CharacterViewController: UIViewController {
         super.viewDidLoad()
 //        view.backgroundColor = .red
         showButtonSetup()
+        closeButtonSetup()
         mainLabelSetup()
         quoteSet()
         characterImageViewSet()
         characterNameSet()
 //        fetchData()
-        let presenter = CharacterPresenter()
-        presenter.fetchData { [weak self] character in
+    
+        
+        presenter.fetchData { [weak self] character, image in
             self?.quote.text = character.quote
             self?.characterName.text = character.character
-//            self?.characterImageView.image = UIImage(data: characterImageData)
+            self?.characterImageView.image = image
             self?.imageActivityIndicatorView.stopAnimating()
         }
         activitySet()
@@ -80,7 +107,7 @@ class CharacterViewController: UIViewController {
 
 //    private func fetchData() {
 //        guard let url = URL(string: url) else { return }
-//        URLSession.shared.dataTask(with: url) { (data, respons, error) in
+//        URLSession.shared.dataTask(with: url) { (data, response, error) in
 //
 //            guard let data = data else { return }
 //
@@ -104,7 +131,7 @@ class CharacterViewController: UIViewController {
 //        }.resume()
 //    }
 
-    private func showButtonSetup() {
+    private func showButtonSetup()  {
         view.addSubview(showButton)
         showButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(70)
@@ -118,6 +145,20 @@ class CharacterViewController: UIViewController {
 //                fetchData()
                 imageActivityIndicatorView.isHidden = false
                 imageActivityIndicatorView.startAnimating()
+    }
+    private func closeButtonSetup() {
+        view.addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
+            make.width.equalTo(80)
+            make.right.equalToSuperview().inset(10)
+            make.top.equalToSuperview().inset(70)
+            closeButton.addTarget(self, action: #selector(backButtonIsTapped), for: .touchUpInside)
+        }
+    }
+    @objc func backButtonIsTapped() {
+        
+     dismiss(animated: true)
+        
     }
     
     private func mainLabelSetup() {
