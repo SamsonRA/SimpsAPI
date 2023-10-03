@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import UIKit
 
 class CharacterPresenter {
+    weak var view: CharacterViewController?
     
     let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
     
-    func fetchData(completion: @escaping (Character) ->Void ) {
+    func fetchData(completion: @escaping (Character, UIImage) ->Void ) {
         guard let url = URL(string: url) else { return }
         URLSession.shared.dataTask(with: url) { (data, respons, error) in
             
@@ -24,9 +26,9 @@ class CharacterPresenter {
                 guard let image = result.first?.image,
                       let urlImage = URL(string: image),
                       let characterImageData = try? Data(contentsOf: urlImage) else { return }
-                
+                    
                 DispatchQueue.main.async {
-                    completion(result.first!)
+                    completion(result.first!, UIImage(data: characterImageData)!)
 //                    self.quote.text = result.first?.quote
 //                    self.characterName.text = result.first?.character
 //                    self.characterImageView.image = UIImage(data: characterImageData)
