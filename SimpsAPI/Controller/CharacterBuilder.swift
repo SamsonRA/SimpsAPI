@@ -13,8 +13,9 @@ final class CharacterBuilder {
     func build() -> UIViewController {
        let presenter = CharacterPresenter()
         let vc = CharacterViewController(presenter: presenter)
+        vc.modalPresentationStyle = .fullScreen
         
-        return UIViewController()
+        return vc
     }
     
 }
