@@ -8,14 +8,14 @@
 import Foundation
 import UIKit
 
-final class CharacterBuilder {
-    
-    func build() -> UIViewController {
-       let presenter = CharacterPresenter()
-        let vc = CharacterViewController(presenter: presenter)
-        vc.modalPresentationStyle = .fullScreen
-        
-        return vc
-    }
-    
-}
+//final class CharacterBuilder {
+//    
+//    func build() -> UIViewController {
+//       let presenter = CharacterPresenter()
+//        let vc = CharacterViewController(presenter: presenter)
+//        vc.modalPresentationStyle = .fullScreen
+//        
+//        return vc
+//    }
+//    
+//}

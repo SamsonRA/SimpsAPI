@@ -83,12 +83,12 @@ class StartViewController: UIViewController {
         }
     }
     func showCharacter() {
-//        let vc = CharacterViewController()
-//        vc.modalPresentationStyle = .fullScreen
-//        present(vc, animated: true )
-        let builder = CharacterBuilder()
-        let vc = builder.build()
+        let vc = CharacterViewController()
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true )
+//        let builder = CharacterBuilder()
+//        let vc = builder.build()
+//        present(vc, animated: true )
         
     }
 }

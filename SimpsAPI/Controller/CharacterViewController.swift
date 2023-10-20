@@ -7,18 +7,19 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class CharacterViewController: UIViewController {
-    private let presenter: CharacterPresenter
-    init(presenter: CharacterPresenter){
-        self.presenter = presenter
-        super.init(nibName: nil, bundle: nil)
-        
-    }
+    //    private let presenter: CharacterPresenter
+    //    init(presenter: CharacterPresenter){
+    //        self.presenter = presenter
+    //        super.init(nibName: nil, bundle: nil)
+    //
+    //    }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    //    required init?(coder: NSCoder) {
+    //        fatalError("init(coder:) has not been implemented")
+    //    }
     private lazy var showButton = {
         let button = UIButton()
         button.setTitle("Next", for: .normal)
@@ -45,92 +46,89 @@ class CharacterViewController: UIViewController {
     }()
     
     private var mainLabel = {
-       let label =  UILabel()
+        let label =  UILabel()
         label.text = "Quotes by\n" + "The Simpsons"
         label.textAlignment = .center
         label.numberOfLines = 2
         label.font = UIFont(name: "Bradley Hand", size: 25)
         label.textColor = UIColor(red: 242/255, green: 75/255, blue: 80/255, alpha: 1)
         
-       return label
+        return label
     }()
     
     private var quote = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = UIFont(name: "Noteworthy", size: 20)
         label.numberOfLines = 0
-       return label
+        return label
     }()
-   private  var characterImageView = {
-       let character = UIImageView()
-       return character
-   }()
-   private  var characterName = {
-      let name = UILabel()
-       name.font = UIFont(name: "Noteworthy", size: 25)
-       
-       
-       return name
-   }()
+    private  var characterImageView = {
+        let character = UIImageView()
+        return character
+    }()
+    private  var characterName = {
+        let name = UILabel()
+        name.font = UIFont(name: "Noteworthy", size: 25)
+        
+        
+        return name
+    }()
     
     var imageActivityIndicatorView = UIActivityIndicatorView()
     
     
-
-//    let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
     
-
+    let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
+    
+    private var networkService = NetworkService()
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        view.backgroundColor = .red
+        //        view.backgroundColor = .red
         showButtonSetup()
         closeButtonSetup()
         mainLabelSetup()
         quoteSet()
         characterImageViewSet()
         characterNameSet()
-//        fetchData()
-    
-        
-        presenter.fetchData { [weak self] character, image in
-            self?.quote.text = character.quote
-            self?.characterName.text = character.character
-            self?.characterImageView.image = image
-            self?.imageActivityIndicatorView.stopAnimating()
-        }
         activitySet()
+        fetchData()
         
-
+        
+        
     }
-
-//    private func fetchData() {
-//        guard let url = URL(string: url) else { return }
-//        URLSession.shared.dataTask(with: url) { (data, response, error) in
-//
-//            guard let data = data else { return }
-//
-//
-//            do {
-//                let result = try JSONDecoder().decode([Character].self, from: data)
-//
-//                guard let image = result.first?.image,
-//                let urlImage = URL(string: image),
-//                let characterImageData = try? Data(contentsOf: urlImage) else { return }
-//
-//                DispatchQueue.main.async {
-//                    self.quote.text = result.first?.quote
-//                    self.characterName.text = result.first?.character
-//                    self.characterImageView.image = UIImage(data: characterImageData)
-//                    self.imageActivityIndicatorView.stopAnimating()
-//                }
-//            } catch let error {
-//                print("Error: \(error)")
-//            }
-//        }.resume()
-//    }
-
+    //        presenter.fetchData { [weak self] character, image in
+    //                    self?.quote.text = character.quote
+    //                    self?.characterName.text = character.character
+    //                    self?.characterImageView.image = image
+    //                    self?.imageActivityIndicatorView.stopAnimating()
+    //        }
+    private  func showData(character: Character) {
+        
+        quote.text = character.quote
+        characterName.text = character.character
+        networkService.requestImage(url: URL(string: character.image)!) { [weak self] image in
+            self?.characterImageView.image = image
+        }
+        imageActivityIndicatorView.stopAnimating()
+        
+    }
+    
+    private func fetchData() {
+        networkService.sendRequest(url: url) { [weak self] (result) in
+            switch result {
+            case .success(let value):
+                self?.showData(character: value.first!)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    
+    
     private func showButtonSetup()  {
         view.addSubview(showButton)
         showButton.snp.makeConstraints { make in
@@ -139,13 +137,16 @@ class CharacterViewController: UIViewController {
             make.width.equalTo(200)
             showButton.addTarget(self, action: #selector(showButtonIsTapped), for: .touchUpInside)
         }
-       
+        
     }
     @objc func showButtonIsTapped() {
-//                fetchData()
-                imageActivityIndicatorView.isHidden = false
-                imageActivityIndicatorView.startAnimating()
+        
+        fetchData()
+        imageActivityIndicatorView.isHidden = false
+        imageActivityIndicatorView.startAnimating()
+        
     }
+    
     private func closeButtonSetup() {
         view.addSubview(closeButton)
         closeButton.snp.makeConstraints { make in
@@ -157,7 +158,7 @@ class CharacterViewController: UIViewController {
     }
     @objc func backButtonIsTapped() {
         
-     dismiss(animated: true)
+        dismiss(animated: true)
         
     }
     
@@ -185,13 +186,13 @@ class CharacterViewController: UIViewController {
             make.top.equalTo(quote).inset(120)
         }
     }
-     private func characterNameSet(){
+    private func characterNameSet(){
         view.addSubview(characterName)
         characterName.snp.makeConstraints { make in
             make.top.equalTo(characterImageView.snp_bottomMargin).offset(25)
             make.right.equalToSuperview().inset(55)
         }
-                characterName.text = ""
+        characterName.text = ""
     }
     private func activitySet() {
         view.addSubview(imageActivityIndicatorView)
@@ -199,7 +200,8 @@ class CharacterViewController: UIViewController {
         imageActivityIndicatorView.hidesWhenStopped = true
         imageActivityIndicatorView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-          
+            
         }
     }
+    
 }
