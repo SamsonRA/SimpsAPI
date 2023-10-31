@@ -5,21 +5,45 @@
 //  Created by . on 27.09.2023.
 //
 //
-//import Foundation
+import Foundation
 //import UIKit
-//import Alamofire
+import Alamofire
+let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
 //
-//class CharacterPresenter {
-//    weak var view: CharacterViewController?
-//
-//
-//
-//
-//
-//
-//    let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
-//
-//
+class CharacterPresenter {
+    weak var view: CharacterViewController?
+    
+    
+    func sendRequest(url: String, completion: @escaping (Result<[Character], Error>) -> Void) {
+        guard let url = URL(string: url) else { return }
+        
+        
+        AF.request(url).validate().responseDecodable(of: [Character].self, queue: .main,  decoder: JSONDecoder()) { response in
+            switch response.result {
+            case .success(let value):
+                completion(.success(value))
+            case .failure(let error):
+                completion(.failure(error))
+                
+            }
+        }
+    }
+}
+   
+
+
+
+    
+
+
+
+    
+
+
+
+
+
+
 //
 //    func fetchData(completion: @escaping (Character, UIImage) ->Void ) {
 //        guard let url = URL(string: url) else { return }
