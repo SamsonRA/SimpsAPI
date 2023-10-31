@@ -8,18 +8,20 @@
 import UIKit
 import SnapKit
 import Alamofire
+import Kingfisher
 
 class CharacterViewController: UIViewController {
-    //    private let presenter: CharacterPresenter
-    //    init(presenter: CharacterPresenter){
-    //        self.presenter = presenter
-    //        super.init(nibName: nil, bundle: nil)
-    //
-    //    }
     
-    //    required init?(coder: NSCoder) {
-    //        fatalError("init(coder:) has not been implemented")
-    //    }
+    private let presenter: CharacterPresenter
+    init(presenter: CharacterPresenter){
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     private lazy var showButton = {
         let button = UIButton()
         button.setTitle("Next", for: .normal)
@@ -78,11 +80,11 @@ class CharacterViewController: UIViewController {
     
     
     
-    let url = "https://thesimpsonsquoteapi.glitch.me/quotes"
-    
-    private var networkService = NetworkService()
     
     
+    //    private var networkService = NetworkService()
+    
+    var myArray = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,25 +101,9 @@ class CharacterViewController: UIViewController {
         
         
     }
-    //        presenter.fetchData { [weak self] character, image in
-    //                    self?.quote.text = character.quote
-    //                    self?.characterName.text = character.character
-    //                    self?.characterImageView.image = image
-    //                    self?.imageActivityIndicatorView.stopAnimating()
-    //        }
-    private  func showData(character: Character) {
-        
-        quote.text = character.quote
-        characterName.text = character.character
-        networkService.requestImage(url: URL(string: character.image)!) { [weak self] image in
-            self?.characterImageView.image = image
-        }
-        imageActivityIndicatorView.stopAnimating()
-        
-    }
     
-    private func fetchData() {
-        networkService.sendRequest(url: url) { [weak self] (result) in
+    func fetchData() {
+        presenter.sendRequest(url: url) { [ weak self] (result) in
             switch result {
             case .success(let value):
                 self?.showData(character: value.first!)
@@ -126,10 +112,18 @@ class CharacterViewController: UIViewController {
             }
         }
     }
-    
+    func showData(character: Character) {
+        
+        quote.text = character.quote
+        characterName.text = character.character
+        characterImageView.kf.setImage(with: URL(string: character.image)!)
+        imageActivityIndicatorView.stopAnimating()
+        
+    }
     
     
     private func showButtonSetup()  {
+        
         view.addSubview(showButton)
         showButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(70)
@@ -140,7 +134,6 @@ class CharacterViewController: UIViewController {
         
     }
     @objc func showButtonIsTapped() {
-        
         fetchData()
         imageActivityIndicatorView.isHidden = false
         imageActivityIndicatorView.startAnimating()
