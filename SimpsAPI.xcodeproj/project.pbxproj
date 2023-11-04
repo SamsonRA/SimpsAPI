@@ -10,6 +10,7 @@
 		65A074B3753C4B8EB514B1E9 /* Pods_SimpsAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31538DCD511B1C4D072F93AA /* Pods_SimpsAPI.framework */; };
 		E36329392AC498620039F1AE /* CharacterPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E36329382AC498620039F1AE /* CharacterPresenter.swift */; };
 		E37BB56A2ACB54CF00C8FFA4 /* CharacterBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37BB5692ACB54CF00C8FFA4 /* CharacterBuilder.swift */; };
+		E37BB5722AD4995A00C8FFA4 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37BB5712AD4995A00C8FFA4 /* NetworkService.swift */; };
 		E3829E272AC3F04100D22D0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3829E262AC3F04100D22D0E /* AppDelegate.swift */; };
 		E3829E292AC3F04100D22D0E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3829E282AC3F04100D22D0E /* SceneDelegate.swift */; };
 		E3829E2B2AC3F04100D22D0E /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3829E2A2AC3F04100D22D0E /* StartViewController.swift */; };
@@ -26,6 +27,7 @@
 		788B2E81B71301A277A8EB3D /* Pods-SimpsAPI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpsAPI.debug.xcconfig"; path = "Target Support Files/Pods-SimpsAPI/Pods-SimpsAPI.debug.xcconfig"; sourceTree = "<group>"; };
 		E36329382AC498620039F1AE /* CharacterPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterPresenter.swift; sourceTree = "<group>"; };
 		E37BB5692ACB54CF00C8FFA4 /* CharacterBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterBuilder.swift; sourceTree = "<group>"; };
+		E37BB5712AD4995A00C8FFA4 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		E3829E232AC3F04100D22D0E /* SimpsAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpsAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3829E262AC3F04100D22D0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3829E282AC3F04100D22D0E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +95,14 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		E37BB5732AD4996300C8FFA4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E37BB5712AD4995A00C8FFA4 /* NetworkService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		E3829E1A2AC3F04100D22D0E = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +128,7 @@
 				E3157FC52AC9278400386C3B /* View */,
 				E363293B2AC536580039F1AE /* Controller */,
 				E36329382AC498620039F1AE /* CharacterPresenter.swift */,
+				E37BB5732AD4996300C8FFA4 /* Services */,
 				E3829E3C2AC3F1BC00D22D0E /* Character.swift */,
 				E3829E2C2AC3F04100D22D0E /* Main.storyboard */,
 				E3829E2F2AC3F04300D22D0E /* Assets.xcassets */,
@@ -244,6 +255,7 @@
 			files = (
 				E36329392AC498620039F1AE /* CharacterPresenter.swift in Sources */,
 				E3829E3B2AC3F1A700D22D0E /* CharacterViewController.swift in Sources */,
+				E37BB5722AD4995A00C8FFA4 /* NetworkService.swift in Sources */,
 				E3829E2B2AC3F04100D22D0E /* StartViewController.swift in Sources */,
 				E37BB56A2ACB54CF00C8FFA4 /* CharacterBuilder.swift in Sources */,
 				E3829E3D2AC3F1BC00D22D0E /* Character.swift in Sources */,
